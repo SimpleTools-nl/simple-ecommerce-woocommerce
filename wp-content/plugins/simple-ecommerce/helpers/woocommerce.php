@@ -29,17 +29,19 @@ class simpleToolsWooCommerce
         return $_instance;
     }
 
-    public function getProductByID($product_id) : WC_Product|null|false {
-        $product = wc_get_product( $product_id );
+    public function getProductByID($product_id): WC_Product|null|false
+    {
+        $product = wc_get_product($product_id);
 
         return $product;
     }
 
-    public function getIDfromImageName( $guid ){
+    public function getIDfromImageName($guid)
+    {
         global $wpdb;
-        return $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_name='%s'", $guid ) );
+        return $wpdb->get_var($wpdb->prepare("SELECT ID FROM $wpdb->posts WHERE post_name='%s'", $guid));
     }
-    
+
     /**
      * update woocommerce product gallery
      *
@@ -47,21 +49,23 @@ class simpleToolsWooCommerce
      * @param  mixed $image_id_array
      * @return void
      */
-    function updateProdductGallery($product_id, $image_id_array) {
-        if(is_array($image_id_array) && count($image_id_array) > 0) { 
-            update_post_meta($product_id, '_product_image_gallery', implode(',',$image_id_array));
-        }else {
+    function updateProdductGallery($product_id, $image_id_array)
+    {
+        if (is_array($image_id_array) && count($image_id_array) > 0) {
+            update_post_meta($product_id, '_product_image_gallery', implode(',', $image_id_array));
+        } else {
             //remove gallery
             update_post_meta($product_id, '_product_image_gallery', "");
         }
     }
-        
-    public function updatePostName( $ID, $post_name ){
-        
+
+    public function updatePostName($ID, $post_name)
+    {
+
         $db = lknDb::getInstance();
 
-        $post_name=$db->_escape($post_name);
-        $ID=$db->_escape($ID);
+        $post_name = $db->_escape($post_name);
+        $ID = $db->_escape($ID);
         $sql = "UPDATE #__posts SET post_name='$post_name' WHERE ID=$ID";
 
         $db->query($sql);
@@ -78,11 +82,11 @@ class simpleToolsWooCommerce
 
         $config = lknConfig::getInstance();
         if (isset($data['recordPerPage'])) {
-           $recordPerPage = $data['recordPerPage'];
-        }else {
+            $recordPerPage = $data['recordPerPage'];
+        } else {
             $recordPerPage = $config->get('recordPerPage');
         }
-        
+
 
         $start = lknInputFilter::filterInput($_REQUEST, 'start', '', 'INT');
 
@@ -95,7 +99,7 @@ class simpleToolsWooCommerce
 
         $args = array(
             'post_type' => 'product',
-            'post_status' => 'published',
+            'post_status' => 'publish',
             'offset' => $limitStart,
             'posts_per_page' => $recordPerPage,
             'meta_query' => array(),
@@ -136,13 +140,13 @@ class simpleToolsWooCommerce
          * WE DID NOT TESTED WITH "Grouped product" , "External/Affiliate product" , "Variable product"
          */
         $args['tax_query'] = array(
-                'relation' => ' AND ',
-                array(
-                    'taxonomy' => 'product_type',
-                    'field' => 'slug',
-                    'terms' => array( 'simple' ),
-                )
-            );
+            'relation' => ' AND ',
+            array(
+                'taxonomy' => 'product_type',
+                'field' => 'slug',
+                'terms' => array('simple'),
+            )
+        );
 
 
 
@@ -173,7 +177,7 @@ class simpleToolsWooCommerce
             }
         }
 
-        
+
 
 
         $loop = new WP_Query($args);
@@ -306,7 +310,7 @@ class simpleToolsWooCommerce
 
         $args = array(
             'post_type' => 'product',
-            'post_status' => 'published',
+            'post_status' => 'publish',
             'offset' => $limitStart,
             'posts_per_page' => lknConfig::getInstance()->get('recordPerPage'),
             'meta_query' => array()
@@ -359,20 +363,20 @@ class simpleToolsWooCommerce
             }
         }
 
-                
+
         /**
          * DO NOT EDIT THIS PARAMATER
          * 
          * WE DID NOT TESTED WITH "Grouped product" , "External/Affiliate product" , "Variable product"
          */
         $args['tax_query'] = array(
-                'relation' => ' AND ',
-                array(
-                    'taxonomy' => 'product_type',
-                    'field' => 'slug',
-                    'terms' => array( 'simple' ),
-                )
-            );
+            'relation' => ' AND ',
+            array(
+                'taxonomy' => 'product_type',
+                'field' => 'slug',
+                'terms' => array('simple'),
+            )
+        );
 
 
         $loop = new WP_Query($args);
@@ -445,7 +449,6 @@ class simpleToolsWooCommerce
             $sql .= $db->getLimit();
         }
 
-
         $db->query($sql);
         $db->setQuery();
         if ($db->getErrorMessage() != '') {
@@ -515,15 +518,14 @@ class simpleToolsWooCommerce
             if (strpos($wc_attr, 'pa_') !== false) {
                 $prod_attrs[$wc_attr] = [];
                 $wc_terms = $wc_term_objs->get_terms();
-                if(is_array($wc_terms)){
-                                    foreach ($wc_terms as $wc_term) {
-                    $prod_attrs[$wc_attr][] = $wc_term->slug;
+                if (is_array($wc_terms)) {
+                    foreach ($wc_terms as $wc_term) {
+                        $prod_attrs[$wc_attr][] = $wc_term->slug;
+                    }
                 }
-                }
-
             } else {
                 $wc_terms = $wc_term_objs->get_data()['options'];
-                if(is_array($wc_terms)){
+                if (is_array($wc_terms)) {
                     foreach ($wc_terms as $wc_term) {
                         $prod_attrs[$wc_attr][] = $wc_term;
                     }
@@ -545,7 +547,7 @@ class simpleToolsWooCommerce
     public function getProducts2Send($data = array()): array
     {
 
-  
+
         $products = $this->getProducts($data);
         $rows = array();
 
