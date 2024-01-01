@@ -1,0 +1,54 @@
+._simple-mb-15 {margin-bottom: 15px !important;}
+._simple-mt-15 {margin-top: 15px !important;}
+._simple-fl {float: right !important;}
+._simple-text-center {text-align: center}
+
+._simple_strong{font-weight: bold !important;}
+._simple_fs16{font-size: 16px !important;}
+._simple_fs30{font-size: 30px !important;}
+
+._simple_w30px{width: 30px !important;}
+._simple_w70px{width: 70px !important;}
+._simple_w100px{width: 100px !important;}
+._simple_w20{width: 20% !important;}
+._simple_w30{width: 20% !important;}
+._simple_max_w_50px{max-width: 50px !important;}
+
+._simple_red{color: #f5020e !important;}
+
+._simple_cursor{cursor:pointer !important;}
+
+.form-loading {
+    background: url("../images/loading.gif") no-repeat;
+    width: 16px;
+    height: 11px;
+    position: relative;
+    clear: both;
+    display: inline-block
+}
+
+
+.paging_front{margin: 0 auto;text-align: center;}
+.paging_front ul{margin: 0 auto;text-align: center;}
+.paging_front ul li.page-item{display: inline-block;margin: 10px;font-size: 15px;}
+.paging_front ul li.active{font-weight: 700;color: #000000 !important;font-size: 120% !important;}
+
+
+._simple_ecommerce_list_full_synchronization_start{
+    min-width:200px;
+    margin-left: 4px;
+    padding: 4px 8px;
+    position: relative;
+    top: -3px;
+    text-decoration: none;
+    border: 1px solid #2271b1;
+    border-radius: 2px;
+    text-shadow: none;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: normal;
+    color: #2271b1;
+    background: #f6f7f7;
+    cursor: pointer;
+
+}
