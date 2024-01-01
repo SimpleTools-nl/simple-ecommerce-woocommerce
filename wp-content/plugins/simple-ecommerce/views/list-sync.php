@@ -2,7 +2,7 @@
 
 <div class="wrap _simple_ecommerce  _simple_ecommerce_list_full_synchronization">
 
-    <?php require_once __DIR__.LKN_DS.'list.toolbar.php';?>
+    <?php require_once __DIR__ . LKN_DS . 'list.toolbar.php'; ?>
 
     <table class="wp-list-table widefat fixed striped table-view-list posts">
         <thead>
@@ -25,27 +25,26 @@
 
     <table class="wp-list-table widefat fixed striped table-view-list posts _simple-mb-15 _simple-mt-15">
         <thead>
-        <tr>
-            <th class="_simple_w30">Tool Name</th>
-            <th>Tool Description</th>
-        </tr>
+            <tr>
+                <th class="_simple_w30">Tool Name</th>
+                <th>Tool Description</th>
+            </tr>
         </thead>
 
         <tbody>
-        <tr class="author-self level-0 type-product has-post-thumbnail">
-            <td class="_simple_w30"><button type="button" data-url="<?php echo LKN_BASE_PATH; ?>/simple-ecommerce-api.php?action=do_sync" class="_simple_ecommerce_list_full_synchronization_start page-title-action">Do Pending Synchronization</button></td>
-            <td>
-                The following button will start a full synchronization with your ecommerce.simpletools.nl account before using
-                the plugin
-            </td>
-        </tr>
+            <tr class="author-self level-0 type-product has-post-thumbnail">
+                <td class="_simple_w30"><button type="button" data-url="<?php echo LKN_BASE_PATH; ?>/simple-ecommerce-api.php?action=do_sync" class="_simple_ecommerce_list_full_synchronization_start page-title-action">Do Pending Synchronization</button></td>
+                <td>
+                    You can start a synchronization for the pending product without waiting system to work
+                </td>
+            </tr>
 
-        <tr class="author-self level-0 type-product has-post-thumbnail">
-            <td class="_simple_w30"><button data-href="<?php echo LKN_BASE_PATH; ?>/simple-ecommerce-api.php?action=reset_all" class="page-title-action _simple_btn_get">Reset All Sync Status</button></td>
-            <td>
-                Reset the synchronization status and start over again
-            </td>
-        </tr>
+            <tr class="author-self level-0 type-product has-post-thumbnail">
+                <td class="_simple_w30"><button data-href="<?php echo LKN_BASE_PATH; ?>/simple-ecommerce-api.php?action=reset_all" class="page-title-action _simple_btn_get">Reset All Sync Status</button></td>
+                <td>
+                    Reset the synchronization status and start over again
+                </td>
+            </tr>
 
 
 
