@@ -1,0 +1,19 @@
+# Ignore everything
+*.php
+.htaccess
+readme.txt
+robots.txt
+license.txt
+
+**/.DS_Store
+**.log
+**index.html
+
+.vscode
+wp-admin/
+wp-includes/
+wp-content/index.php
+wp-content/themes/*
+wp-content/uploads/*
+wp-content/plugins/*
+!/wp-content/plugins/simple-ecommerce/
