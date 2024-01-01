@@ -16,9 +16,9 @@ if (!defined('_SIMPLE_ECOMMERCE_PLUGIN')) {
     define("LKN_BASE_PATH", $plugins_url . '/simple-ecommerce');
 
     require_once _SITE_ROOT . LKN_DS . 'wp-load.php';
-    require_once(_SITE_ROOT . LKN_DS. 'wp-admin/includes/media.php');
-    require_once(_SITE_ROOT . LKN_DS. 'wp-admin/includes/file.php');
-    require_once(_SITE_ROOT . LKN_DS. 'wp-admin/includes/image.php');
+    require_once(_SITE_ROOT . LKN_DS . 'wp-admin/includes/media.php');
+    require_once(_SITE_ROOT . LKN_DS . 'wp-admin/includes/file.php');
+    require_once(_SITE_ROOT . LKN_DS . 'wp-admin/includes/image.php');
 
     define("LKN_WP_ADMIN_URL", get_admin_url());
 }
@@ -43,10 +43,10 @@ if (!is_admin()) {
          * This endpoint sends the changed your products to ecommerce.simpletools.nl. so ecommerce.simpletools.nl can sync the product your other ecommerce sites
          */
 
-         $site_title = get_bloginfo( 'name' );
-         $config=lknConfig::getInstance();
-                 
-         
+        $site_title = get_bloginfo('name');
+        $config = lknConfig::getInstance();
+
+
         $simpleEcommercePlugin->loadParams();
         $simpletools_api_user_id = trim(ltrim(rtrim((string)$simpleEcommercePlugin->getPostParam("simple_ecommerce_user_id"))));
         $simple_ecommerce_user_token = trim(ltrim(rtrim((string)$simpleEcommercePlugin->getPostParam("simple_ecommerce_user_token"))));
@@ -56,7 +56,7 @@ if (!is_admin()) {
             exit();
         }
 
-                
+
         $responseText = array();
         try {
             require_once LKN_ROOT . LKN_DS . 'library' . LKN_DS . 'guzzle' . LKN_DS . 'vendor' . LKN_DS . 'autoload.php';
@@ -77,28 +77,32 @@ if (!is_admin()) {
         }
 
 
-                
         if (isset($responseText['status'])) {
 
             if ($responseText['status'] == "1") {
-                $rows=$responseText['msg'];
-                 $simpleWooCommerce = simpleToolsWooCommerce::getInstance();
+                $rows = $responseText['msg'];
+                if (!is_array($rows)) {
+                    //return if the value is "There is no pending task"
+                    return false;
+                }
 
-                $result=array();
-                $newsAdded=array();
+                $simpleWooCommerce = simpleToolsWooCommerce::getInstance();
+
+                $result = array();
+                $newsAdded = array();
 
                 foreach ($rows as $pending_id => $row) {
-                    $sync_product_id_target=$row['sync_product_id_target'];
-                    $product_id=$row['product_id'];
-                    $product_name=$row['product_name'] ;
+                    $sync_product_id_target = $row['sync_product_id_target'];
+                    $product_id = $row['product_id'];
+                    $product_name = $row['product_name'];
 
                     lknvar_dump($sync_product_id_target);
                     lknvar_dump($product_name);
 
                     $productData = $simpleWooCommerce->getProductByID($sync_product_id_target);
-                        
-                        
-                    $productData->set_name($product_name);                
+
+
+                    $productData->set_name($product_name);
                     $productData->set_description($row['product_description']);
                     $productData->set_short_description($row['product_short_description']);
 
@@ -106,8 +110,8 @@ if (!is_admin()) {
                     $productData->set_sku($row['product_sku']);
                     $productData->set_status($row['product_status']);
 
-                    $product_price_original=$row['product_price_original'];//base price on ecommerce.simpletools.nl
-                    $productData->set_sale_price($row['product_price_final']);//price will be this one
+                    $product_price_original = $row['product_price_original']; //base price on ecommerce.simpletools.nl
+                    $productData->set_sale_price($row['product_price_final']); //price will be this one
                     $productData->set_price($row['product_price_final']);
                     $productData->set_regular_price($row['product_price_final']);
 
@@ -125,30 +129,30 @@ if (!is_admin()) {
                     $productData->set_downloadable($row['product_downloadable']);
 
                     //product downloads
-                    $downloads=array();
-                    $tmp=$file_id=$download=null;
-                    $product_download_url=$row['product_download_url'];
-                    if ($product_download_url!='') {
-                        $download= new WC_Product_Download();
-                        $file_id=md5($product_download_url);
-                        $tmp=explode("/",$product_download_url);
+                    $downloads = array();
+                    $tmp = $file_id = $download = null;
+                    $product_download_url = $row['product_download_url'];
+                    if ($product_download_url != '') {
+                        $download = new WC_Product_Download();
+                        $file_id = md5($product_download_url);
+                        $tmp = explode("/", $product_download_url);
                         $download->set_file($product_download_url);
                         $download->set_id($file_id);
-                        $downloads[$file_id]=$download;
+                        $downloads[$file_id] = $download;
                     }
 
                     $productData->set_downloads($downloads);
-                    $file_id=$downloads=$download=null;
+                    $file_id = $downloads = $download = null;
 
-                       
+
                     //SET THE PRODUCT attributes        
-                    $attributes=array();                     
-                    $product_attributes=$row['product_attributes'];                    
-                    if (count($product_attributes)>0) {
-                        foreach ($product_attributes as $product_attribute) {        
-                            $product_attribute_name=$product_attribute['attribute_title'];
-                            $product_attribute_value=$product_attribute['attribute_value'];
-                            
+                    $attributes = array();
+                    $product_attributes = $row['product_attributes'];
+                    if (count($product_attributes) > 0) {
+                        foreach ($product_attributes as $product_attribute) {
+                            $product_attribute_name = $product_attribute['attribute_title'];
+                            $product_attribute_value = $product_attribute['attribute_value'];
+
                             //  array(9) {
                             // [0]=>
                             // array(2) {
@@ -166,73 +170,72 @@ if (!is_admin()) {
                             // }
                             // ...
 
-                              $attribute = new WC_Product_Attribute();
-                              $attribute->set_name($product_attribute_name);
-                              $attribute->set_options(array($product_attribute_value));
-                              $attribute->set_visible(1);
+                            $attribute = new WC_Product_Attribute();
+                            $attribute->set_name($product_attribute_name);
+                            $attribute->set_options(array($product_attribute_value));
+                            $attribute->set_visible(1);
 
-                              $attributes[] = $attribute;
+                            $attributes[] = $attribute;
                         }
                     }
 
                     $productData->set_attributes($attributes);
-                    $attributes=null;
-        
-                    
+                    $attributes = null;
+
+
 
 
                     $sync_product_id_target_new = $productData->save();
-                    if ($sync_product_id_target<=0) {
-                        $newsAdded[$product_id]=$sync_product_id_target_new;
+                    if ($sync_product_id_target <= 0) {
+                        $newsAdded[$product_id] = $sync_product_id_target_new;
                         $sync_product_id_target = $sync_product_id_target_new;
                     }
 
                     //default image                    
-                    $product_image=$row['product_image'];//thumb-default image
-                    $product_image_name = explode('/',$product_image);
-                    $product_image_name=$product_image_name[count($product_image_name)-1];
+                    $product_image = $row['product_image']; //thumb-default image
+                    $product_image_name = explode('/', $product_image);
+                    $product_image_name = $product_image_name[count($product_image_name) - 1];
                     $product_image_id_main = $simpleWooCommerce->getIDfromImageName($product_image_name);
-                    if($product_image_id_main<=0){
-                        $product_image_id_main = media_sideload_image($product_image,0,$product_image_name,'id');
-                        $simpleWooCommerce->updatePostName($product_image_id,$product_image_name);
+                    if ($product_image_id_main <= 0) {
+                        $product_image_id_main = media_sideload_image($product_image, 0, $product_image_name, 'id');
+                        $simpleWooCommerce->updatePostName($product_image_id, $product_image_name);
                     }
-                    set_post_thumbnail( $sync_product_id_target, $product_image_id_main );
+                    set_post_thumbnail($sync_product_id_target, $product_image_id_main);
 
                     //image gallery
-                    $product_images=$row['product_images'];
-                    $image_ids=array();
-                    if (is_array($product_images) && count($product_images)>0) {
+                    $product_images = $row['product_images'];
+                    $image_ids = array();
+                    if (is_array($product_images) && count($product_images) > 0) {
                         foreach ($product_images as $product_image) {
-                            $product_image_name = explode('/',$product_image);
-                            $product_image_name=$product_image_name[count($product_image_name)-1];
+                            $product_image_name = explode('/', $product_image);
+                            $product_image_name = $product_image_name[count($product_image_name) - 1];
                             $product_image_id = $simpleWooCommerce->getIDfromImageName($product_image_name);
-                            if($product_image_id<=0){
-                                $product_image_id = media_sideload_image($product_image,0,$product_image_name,'id');
-                                $simpleWooCommerce->updatePostName($product_image_id,$product_image_name);
+                            if ($product_image_id <= 0) {
+                                $product_image_id = media_sideload_image($product_image, 0, $product_image_name, 'id');
+                                $simpleWooCommerce->updatePostName($product_image_id, $product_image_name);
                             }
 
                             if ($product_image_id_main != $product_image_id) {
                                 // because $product_image_id_main is the default thumb
-                                $image_ids[]=$product_image_id;
+                                $image_ids[] = $product_image_id;
                             }
-                            
                         }
                     }
 
-                    $simpleWooCommerce->updateProdductGallery($sync_product_id_target,$image_ids);
-        
- 
-                    $product_tags=trim(ltrim(rtrim($row['product_tags'])));//comma sepeparated tags like usb,computer,red etc
-                    //SET THE PRODUCT TAGS
-                    wp_set_object_terms($sync_product_id_target, explode(',',$product_tags), 'product_tag');
+                    $simpleWooCommerce->updateProdductGallery($sync_product_id_target, $image_ids);
 
-                 
+
+                    $product_tags = trim(ltrim(rtrim($row['product_tags']))); //comma sepeparated tags like usb,computer,red etc
+                    //SET THE PRODUCT TAGS
+                    wp_set_object_terms($sync_product_id_target, explode(',', $product_tags), 'product_tag');
+
+
                     //SET THE PRODUCT CATEGORIES        
-                    $categories=array();
-                    $product_categories=(array)$row['product_categories'];
-                    if (count($product_categories)>0) {
+                    $categories = array();
+                    $product_categories = (array)$row['product_categories'];
+                    if (count($product_categories) > 0) {
                         foreach ($product_categories as $product_category) {
-                                                    
+
                             //   array(1) {
                             //     [0]=>
                             //     array(2) {
@@ -243,17 +246,16 @@ if (!is_admin()) {
                             //     }
                             //   }
 
-                            $categories[]=$product_category['category_title'];
+                            $categories[] = $product_category['category_title'];
                         }
                     }
 
                     wp_set_object_terms($sync_product_id_target, array_unique($categories), 'product_cat');
-                    $categories=null;
+                    $categories = null;
 
-                    $result['product-id-'.$product_id]=(!isset($result['product-id-'.$product_id])?$sync_product_id_target:$result['product-id-'.$product_id]);
-
+                    $result['product-id-' . $product_id] = (!isset($result['product-id-' . $product_id]) ? $sync_product_id_target : $result['product-id-' . $product_id]);
                 }
-       
+
                 try {
                     //we are going to inform
                     $client = new \GuzzleHttp\Client();
@@ -269,16 +271,14 @@ if (!is_admin()) {
 
 
                     $responseText = json_decode($response->getBody()->getContents(), true);
-                    lknvar_dump($responseText,1);
+                    lknvar_dump($responseText, 1);
                 } catch (\Throwable $e) {
                     //do nothing
                 }
-
-          
             } else {
-                $return=json_encode(array('status' => 0, 'msg' => json_encode($responseText)));
+                $return = json_encode(array('status' => 0, 'msg' => json_encode($responseText)));
             }
-        }else {
+        } else {
             /**
              * that means there is a maintance period on ecommerce.simpletools.nl. 
              * do nothing
@@ -288,10 +288,8 @@ if (!is_admin()) {
 
 
 
-        lknvar_dump($responseText,1);
-    }
-    
-    else if ($action == 'do_sync') {
+        lknvar_dump($responseText, 1);
+    } else if ($action == 'do_sync') {
 
         /**
          * this endpoint is called by 2 different urls
@@ -307,7 +305,7 @@ if (!is_admin()) {
         $simpleWooCommerce = simpleToolsWooCommerce::getInstance();
         $syncHistoryCount = $simpleWooCommerce->getSyncHistoryCount(array('date_created' => -1, 'date_created_min' => 0));
         $totalProduct = $simpleWooCommerce->getProductsCount();
-        $config=lknConfig::getInstance();
+        $config = lknConfig::getInstance();
 
         $product_id = lknInputFilter::filterInput($_REQUEST, 'product_id');
 
@@ -317,7 +315,7 @@ if (!is_admin()) {
             $sql = array('status' => 'publish', 'post__not_in' => "1");
         }
 
-        $sql['recordPerPage']=$config->get('recordPerPageAPI');
+        $sql['recordPerPage'] = $config->get('recordPerPageAPI');
 
         $rows = $simpleWooCommerce->getProducts2Send($sql);
         if (count($rows) <= 0) {
@@ -406,8 +404,8 @@ if (!is_admin()) {
 
         echo json_encode(array('status' => 1, 'msg' => '', 'func' => 'window.location.reload();'));
         exit();
-    }else if ($action == 'save_settings') {
-        require_once LKN_ROOT.LKN_DS. "task".LKN_DS."save_settings.php";
+    } else if ($action == 'save_settings') {
+        require_once LKN_ROOT . LKN_DS . "task" . LKN_DS . "save_settings.php";
         exit();
     }
 
