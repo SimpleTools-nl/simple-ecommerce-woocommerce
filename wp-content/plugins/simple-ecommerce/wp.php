@@ -2,7 +2,7 @@
 
 defined('_SIMPLE_ECOMMERCE_PLUGIN') or die('Restricted access');
 
-require_once LKN_ROOT . LKN_DS . 'helpers' . LKN_DS . 'woocommerce.php';
+require_once _SIMPLE_ROOT . _SIMPLE_DS . 'helpers' . _SIMPLE_DS . 'woocommerce.php';
 
 
 class simpleToolsEcommerce
@@ -28,7 +28,7 @@ class simpleToolsEcommerce
         $this->_db = &$wpdb;
         $this->_db_prefix_mask = "#__";
 
-        require_once LKN_ROOT . LKN_DS . 'wp_actions.php';
+        require_once _SIMPLE_ROOT . _SIMPLE_DS . 'wp_actions.php';
 
         $this->_wp_actions = simpleToolsEcommerce_WP_Actions::getInstance();
         // $this->_wp_actions->addheader();
@@ -75,15 +75,15 @@ class simpleToolsEcommerce
     private function import()
     {
 
-        require_once SIMPLETOOLS_LIBRARY . LKN_DS . 'phpinputfilter' . LKN_DS . 'phpinputfilter.inputfilter.php';
+        require_once _SIMPLE_LIBRARY . _SIMPLE_DS . 'phpinputfilter' . _SIMPLE_DS . 'phpinputfilter.inputfilter.php';
 
-        require_once SIMPLETOOLS_LIBRARY . LKN_DS . 'library' . LKN_DS . 'registery.php';
-        require_once SIMPLETOOLS_LIBRARY . LKN_DS . 'library' . LKN_DS . 'class.template.php';
-        require_once SIMPLETOOLS_LIBRARY . LKN_DS . 'library' . LKN_DS . 'class.user.php';
-        require_once SIMPLETOOLS_LIBRARY . LKN_DS . 'library' . LKN_DS . 'functions.php';
-        require_once SIMPLETOOLS_LIBRARY . LKN_DS . 'library' . LKN_DS . 'class.db.php';
-        require_once SIMPLETOOLS_LIBRARY . LKN_DS . 'library' . LKN_DS . 'class.config.php';
-        require_once SIMPLETOOLS_LIBRARY . LKN_DS . 'library' . LKN_DS . 'class.paging.php';
+        require_once _SIMPLE_LIBRARY . _SIMPLE_DS . 'library' . _SIMPLE_DS . 'registery.php';
+        require_once _SIMPLE_LIBRARY . _SIMPLE_DS . 'library' . _SIMPLE_DS . 'class.template.php';
+        require_once _SIMPLE_LIBRARY . _SIMPLE_DS . 'library' . _SIMPLE_DS . 'class.user.php';
+        require_once _SIMPLE_LIBRARY . _SIMPLE_DS . 'library' . _SIMPLE_DS . 'functions.php';
+        require_once _SIMPLE_LIBRARY . _SIMPLE_DS . 'library' . _SIMPLE_DS . 'class.db.php';
+        require_once _SIMPLE_LIBRARY . _SIMPLE_DS . 'library' . _SIMPLE_DS . 'class.config.php';
+        require_once _SIMPLE_LIBRARY . _SIMPLE_DS . 'library' . _SIMPLE_DS . 'class.paging.php';
     }
 
     function setUserData()
@@ -104,7 +104,7 @@ class simpleToolsEcommerce
 
         ob_start(); // Start output buffering
         $this->error();
-        require_once LKN_ROOT . LKN_DS . 'simple-ecommerce-admin.php';
+        require_once _SIMPLE_ROOT . _SIMPLE_DS . 'simple-ecommerce-admin.php';
 
         $contents = ob_get_contents(); // Get the contents of the buffer
         ob_end_clean(); // End buffering and discard

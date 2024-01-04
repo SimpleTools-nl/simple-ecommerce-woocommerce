@@ -6,26 +6,26 @@ error_reporting(E_ALL);
 if (!defined('_SIMPLE_ECOMMERCE_PLUGIN')) {
 
     define('_SIMPLE_ECOMMERCE_PLUGIN', true);
-    define('LKN_DS', DIRECTORY_SEPARATOR);
-    define("LKN_ROOT", __DIR__);
-    define("SIMPLETOOLS_LIBRARY", __DIR__ . LKN_DS . 'library');
-    define('_SITE_ROOT', dirname(dirname(dirname(__DIR__))));
+    define('_SIMPLE_DS', DIRECTORY_SEPARATOR);
+    define("_SIMPLE_ROOT", __DIR__);
+    define("_SIMPLE_LIBRARY", __DIR__ . _SIMPLE_DS . 'library');
+    define('_SIMPLE_WP_ROOT', dirname(dirname(dirname(__DIR__))));
 
-    $plugins_url = str_replace(_SITE_ROOT, '', dirname(__DIR__));
-    $plugins_url = str_replace(LKN_DS, '/', $plugins_url);
-    define("LKN_BASE_PATH", $plugins_url . '/simple-ecommerce');
+    $plugins_url = str_replace(_SIMPLE_WP_ROOT, '', dirname(__DIR__));
+    $plugins_url = str_replace(_SIMPLE_DS, '/', $plugins_url);
+    define("_SIMPLE_BASE_PATH", $plugins_url . '/simple-ecommerce');
 
-    require_once _SITE_ROOT . LKN_DS . 'wp-load.php';
-    require_once(_SITE_ROOT . LKN_DS . 'wp-admin/includes/media.php');
-    require_once(_SITE_ROOT . LKN_DS . 'wp-admin/includes/file.php');
-    require_once(_SITE_ROOT . LKN_DS . 'wp-admin/includes/image.php');
+    require_once _SIMPLE_WP_ROOT . _SIMPLE_DS . 'wp-load.php';
+    require_once(_SIMPLE_WP_ROOT . _SIMPLE_DS . 'wp-admin/includes/media.php');
+    require_once(_SIMPLE_WP_ROOT . _SIMPLE_DS . 'wp-admin/includes/file.php');
+    require_once(_SIMPLE_WP_ROOT . _SIMPLE_DS . 'wp-admin/includes/image.php');
 
     define("LKN_WP_ADMIN_URL", get_admin_url());
 }
 
 
 if (!is_admin()) {
-    require_once __DIR__ . LKN_DS . 'wp.php';
+    require_once __DIR__ . _SIMPLE_DS . 'wp.php';
     $simpleEcommercePlugin = simpleToolsEcommerce::getInstance();
 
     $action = lknInputFilter::filterInput($_GET, 'action');
@@ -34,7 +34,6 @@ if (!is_admin()) {
         exit();
     } else if ($action == 'check_sync') {
         /**
-         * ecommerce.simpletools.nl will trigger this endpoint to check if there is any pending changes on ecommerce.simpletools.nl
          * 
          * DO NOT EDIT THIS. YOU HAVE BEEN WARNED. 
          * 
@@ -59,7 +58,7 @@ if (!is_admin()) {
 
         $responseText = array();
         try {
-            require_once LKN_ROOT . LKN_DS . 'library' . LKN_DS . 'guzzle' . LKN_DS . 'vendor' . LKN_DS . 'autoload.php';
+            require_once _SIMPLE_ROOT . _SIMPLE_DS . 'library' . _SIMPLE_DS . 'guzzle' . _SIMPLE_DS . 'vendor' . _SIMPLE_DS . 'autoload.php';
             $client = new \GuzzleHttp\Client();
             $response = $client->request('POST', $config->get('api_get_pending'), [
                 'form_params' => [
@@ -76,7 +75,7 @@ if (!is_admin()) {
             $responseText = array('status' => 0, 'msg' => $e->getMessage());
         }
 
-
+        $result = array();
         if (isset($responseText['status'])) {
 
             if ($responseText['status'] == "1") {
@@ -88,16 +87,13 @@ if (!is_admin()) {
 
                 $simpleWooCommerce = simpleToolsWooCommerce::getInstance();
 
-                $result = array();
+
                 $newsAdded = array();
 
                 foreach ($rows as $pending_id => $row) {
                     $sync_product_id_target = $row['sync_product_id_target'];
                     $product_id = $row['product_id'];
                     $product_name = $row['product_name'];
-
-                    lknvar_dump($sync_product_id_target);
-                    lknvar_dump($product_name);
 
                     $productData = $simpleWooCommerce->getProductByID($sync_product_id_target);
 
@@ -256,6 +252,8 @@ if (!is_admin()) {
                     $result['product-id-' . $product_id] = (!isset($result['product-id-' . $product_id]) ? $sync_product_id_target : $result['product-id-' . $product_id]);
                 }
 
+
+
                 try {
                     //we are going to inform
                     $client = new \GuzzleHttp\Client();
@@ -264,7 +262,7 @@ if (!is_admin()) {
                             'user_id' => $simpletools_api_user_id,
                             'token' => $simple_ecommerce_user_token,
                             'account_id' => $simple_ecommerce_account_id,
-                            'form_data' => json_encode($rows)
+                            'update_result' => json_encode($result)
                         ],
                         'timeout' =>  $config->get('timeout')
                     ]);
@@ -287,12 +285,11 @@ if (!is_admin()) {
 
 
 
-
         lknvar_dump($responseText, 1);
     } else if ($action == 'do_sync') {
 
         /**
-         * this endpoint is called by 2 different urls
+         * this endpoint is called by 2 different urls. it sends changes to your ecommerce.simpletools.nl account
          * 1. ecommerce.simpletools.nl will trigger this endpoint to check if there is any pending changes. We will try to access https://www.sitename.com/wp-content/plugins/simple-ecommerce/simple-ecommerce-api.php?action=do_sync
          * 2. Plugin Home > "Full Sync" button (which is on top right)
          * 
@@ -339,7 +336,7 @@ if (!is_admin()) {
 
         $responseText = array();
         try {
-            require_once LKN_ROOT . LKN_DS . 'library' . LKN_DS . 'guzzle' . LKN_DS . 'vendor' . LKN_DS . 'autoload.php';
+            require_once _SIMPLE_ROOT . _SIMPLE_DS . 'library' . _SIMPLE_DS . 'guzzle' . _SIMPLE_DS . 'vendor' . _SIMPLE_DS . 'autoload.php';
             $client = new \GuzzleHttp\Client();
             $response = $client->request('POST',  $config->get('api_save_product'), [
                 'form_params' => [
@@ -405,7 +402,7 @@ if (!is_admin()) {
         echo json_encode(array('status' => 1, 'msg' => '', 'func' => 'window.location.reload();'));
         exit();
     } else if ($action == 'save_settings') {
-        require_once LKN_ROOT . LKN_DS . "task" . LKN_DS . "save_settings.php";
+        require_once _SIMPLE_ROOT . _SIMPLE_DS . "task" . _SIMPLE_DS . "save_settings.php";
         exit();
     }
 

@@ -32,7 +32,7 @@ if ($simpletools_api_user_id == '') {
 }
 
 
-require_once LKN_ROOT . LKN_DS . 'library' . LKN_DS . 'guzzle' . LKN_DS . 'vendor' . LKN_DS . 'autoload.php';
+require_once _SIMPLE_ROOT . _SIMPLE_DS . 'library' . _SIMPLE_DS . 'guzzle' . _SIMPLE_DS . 'vendor' . _SIMPLE_DS . 'autoload.php';
 $client = new \GuzzleHttp\Client();
 $response = $client->request('POST', lknConfig::getInstance()->get('api_save_site'), [
     'form_params' => [

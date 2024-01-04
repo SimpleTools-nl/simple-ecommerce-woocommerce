@@ -64,7 +64,7 @@ class simpleToolsEcommerce_WP_Actions
     function adminPage()
     {
 
-        require_once LKN_ROOT . LKN_DS . 'simple-ecommerce-admin.php';
+        require_once _SIMPLE_ROOT . _SIMPLE_DS . 'simple-ecommerce-admin.php';
     }
 
 
@@ -81,10 +81,10 @@ class simpleToolsEcommerce_WP_Actions
     function addheader()
     {
         if (!$_POST) {
-            wp_enqueue_script('simpletools_main', LKN_BASE_PATH . '/views/assets/js/main.js?' . time());
-            wp_enqueue_style('simpletools_css', LKN_BASE_PATH . "/views/assets/css/main.css?3" . time());
-            wp_enqueue_style('simpletools_toast_css', LKN_BASE_PATH . "/views/assets/jquery/toastr/toastr.css?3" . time());
-            wp_enqueue_script('simpletools_toast_js', LKN_BASE_PATH . "/views/assets/jquery/toastr/toastr.js?3" . time());
+            wp_enqueue_script('simpletools_main', _SIMPLE_BASE_PATH . '/views/assets/js/main.js?' . time());
+            wp_enqueue_style('simpletools_css', _SIMPLE_BASE_PATH . "/views/assets/css/main.css?3" . time());
+            wp_enqueue_style('simpletools_toast_css', _SIMPLE_BASE_PATH . "/views/assets/jquery/toastr/toastr.css?3" . time());
+            wp_enqueue_script('simpletools_toast_js', _SIMPLE_BASE_PATH . "/views/assets/jquery/toastr/toastr.js?3" . time());
         }
     }
     function simple_ecommerce_category_updated($id, $post, $update)
@@ -183,9 +183,9 @@ class simpleToolsEcommerce_WP_Actions
 
                                 <div class="simpletools_how">
                                     <?php add_thickbox(); ?>
-                                    <a href="<?php echo LKN_BASE_PATH; ?>/task/parameters.php?TB_iframe=true&width=600&height=550" class="thickbox">View Parameters Information</a><br /><br />
+                                    <a href="<?php echo _SIMPLE_BASE_PATH; ?>/task/parameters.php?TB_iframe=true&width=600&height=550" class="thickbox">View Parameters Information</a><br /><br />
 
-                                    <a href="<?php echo LKN_BASE_PATH; ?>/task/how.php?TB_iframe=true&width=600&height=550" class="thickbox">How this plugin works</a>
+                                    <a href="<?php echo _SIMPLE_BASE_PATH; ?>/task/how.php?TB_iframe=true&width=600&height=550" class="thickbox">How this plugin works</a>
                                 </div>
 
                         </tr>

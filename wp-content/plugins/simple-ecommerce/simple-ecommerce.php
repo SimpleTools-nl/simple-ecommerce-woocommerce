@@ -16,18 +16,18 @@
 if (!defined('_SIMPLE_ECOMMERCE_PLUGIN')) {
 
     define('_SIMPLE_ECOMMERCE_PLUGIN', true);
-    define('LKN_DS', DIRECTORY_SEPARATOR);
-    define("LKN_ROOT", __DIR__);
-    define("SIMPLETOOLS_LIBRARY", __DIR__ . LKN_DS . 'library');
-    define('_SITE_ROOT', dirname(dirname(dirname(__DIR__))));
+    define('_SIMPLE_DS', DIRECTORY_SEPARATOR);
+    define("_SIMPLE_ROOT", __DIR__);
+    define("_SIMPLE_LIBRARY", __DIR__ . _SIMPLE_DS . 'library');
+    define('_SIMPLE_WP_ROOT', dirname(dirname(dirname(__DIR__))));
 
-    $plugins_url = str_replace(_SITE_ROOT, '', dirname(__DIR__));
-    $plugins_url = str_replace(LKN_DS, '/', $plugins_url);
-    define("LKN_BASE_PATH", $plugins_url . '/simple-ecommerce');
+    $plugins_url = str_replace(_SIMPLE_WP_ROOT, '', dirname(__DIR__));
+    $plugins_url = str_replace(_SIMPLE_DS, '/', $plugins_url);
+    define("_SIMPLE_BASE_PATH", $plugins_url . '/simple-ecommerce');
     define("LKN_WP_ADMIN_URL", get_admin_url());
 }
 
-require_once __DIR__ . LKN_DS . 'wp.php';
+require_once __DIR__ . _SIMPLE_DS . 'wp.php';
 $simpleEcommercePlugin = simpleToolsEcommerce::getInstance();
 $simpleEcommerceWoocommerce = simpleToolsWooCommerce::getInstance();
 
