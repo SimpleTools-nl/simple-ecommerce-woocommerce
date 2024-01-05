@@ -20,7 +20,7 @@ if (!defined('_SIMPLE_ECOMMERCE_PLUGIN')) {
     require_once(_SIMPLE_WP_ROOT . _SIMPLE_DS . 'wp-admin/includes/file.php');
     require_once(_SIMPLE_WP_ROOT . _SIMPLE_DS . 'wp-admin/includes/image.php');
 
-    define("LKN_WP_ADMIN_URL", get_admin_url());
+    define("_SIMPLE_WP_ADMIN_URL", get_admin_url());
 }
 
 

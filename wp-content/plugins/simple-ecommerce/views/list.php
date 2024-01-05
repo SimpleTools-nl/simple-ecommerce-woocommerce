@@ -100,7 +100,7 @@
 
                         $product_attributes = $row->product_attributes;
 
-                        $edit_url = LKN_WP_ADMIN_URL . 'post.php?post=' . $product_id . '&amp;action=edit';
+                        $edit_url = _SIMPLE_WP_ADMIN_URL . 'post.php?post=' . $product_id . '&amp;action=edit';
                 ?>
                         <tr id="post-<?php echo $product_id; ?> " class="author-self level-0 post-<?php echo $product_id; ?> type-product has-post-thumbnail">
                             <td class="_simple_w30px"><?php echo $i; ?></td>
@@ -158,7 +158,7 @@
 
                                         <hr />
 
-                                        <a href="<?php echo LKN_WP_ADMIN_URL; ?>admin.php?page=simple-ecommerce-admin.php&task=stop-sync&product_id=<?php echo $product_id; ?>&return_to=<?php echo base64_encode($_SERVER['REQUEST_URI']) ?>">Never
+                                        <a href="<?php echo _SIMPLE_WP_ADMIN_URL; ?>admin.php?page=simple-ecommerce-admin.php&task=stop-sync&product_id=<?php echo $product_id; ?>&return_to=<?php echo base64_encode($_SERVER['REQUEST_URI']) ?>">Never
                                             Sync This Product In Future</a>
                                         <hr />
 
@@ -174,7 +174,7 @@
 
                                         <hr />
 
-                                        <a href="<?php echo LKN_WP_ADMIN_URL; ?>admin.php?page=simple-ecommerce-admin.php&task=start-sync&product_id=<?php echo $product_id; ?>&return_to=<?php echo base64_encode($_SERVER['REQUEST_URI']) ?>">Allow
+                                        <a href="<?php echo _SIMPLE_WP_ADMIN_URL; ?>admin.php?page=simple-ecommerce-admin.php&task=start-sync&product_id=<?php echo $product_id; ?>&return_to=<?php echo base64_encode($_SERVER['REQUEST_URI']) ?>">Allow
                                             Sync For this product</a>
                                     <?php
 
@@ -191,7 +191,7 @@
                                             yet
                                         </div>
                                         <hr>
-                                        <a href="<?php echo LKN_WP_ADMIN_URL; ?>admin.php?page=simple-ecommerce-admin.php&task=stop-sync&product_id=<?php echo $product_id; ?>&return_to=<?php echo base64_encode($_SERVER['REQUEST_URI']) ?>">Never
+                                        <a href="<?php echo _SIMPLE_WP_ADMIN_URL; ?>admin.php?page=simple-ecommerce-admin.php&task=stop-sync&product_id=<?php echo $product_id; ?>&return_to=<?php echo base64_encode($_SERVER['REQUEST_URI']) ?>">Never
                                             Sync This Product In Future</a>
                                     <?php
                                     }
@@ -206,7 +206,7 @@
 
                                     <hr />
 
-                                    <a href="<?php echo LKN_WP_ADMIN_URL; ?>admin.php?page=simple-ecommerce-admin.php&task=stop-sync&product_id=<?php echo $product_id; ?>&return_to=<?php echo base64_encode($_SERVER['REQUEST_URI']) ?>">Never
+                                    <a href="<?php echo _SIMPLE_WP_ADMIN_URL; ?>admin.php?page=simple-ecommerce-admin.php&task=stop-sync&product_id=<?php echo $product_id; ?>&return_to=<?php echo base64_encode($_SERVER['REQUEST_URI']) ?>">Never
                                         Sync This Product In Future</a>
                                 <?php
                                 }

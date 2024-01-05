@@ -24,7 +24,7 @@ if (!defined('_SIMPLE_ECOMMERCE_PLUGIN')) {
     $plugins_url = str_replace(_SIMPLE_WP_ROOT, '', dirname(__DIR__));
     $plugins_url = str_replace(_SIMPLE_DS, '/', $plugins_url);
     define("_SIMPLE_BASE_PATH", $plugins_url . '/simple-ecommerce');
-    define("LKN_WP_ADMIN_URL", get_admin_url());
+    define("_SIMPLE_WP_ADMIN_URL", get_admin_url());
 }
 
 require_once __DIR__ . _SIMPLE_DS . 'wp.php';
