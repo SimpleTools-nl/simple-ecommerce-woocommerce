@@ -75,7 +75,7 @@ class lknTemplate
 	{
 
 
-		$file = _SIMPLE_ROOT . _SIMPLE_DS . 'views' . LKN_DS . $filename . '.php';
+		$file = _SIMPLE_ROOT . _SIMPLE_DS . 'views' . _SIMPLE_DS . $filename . '.php';
 
 
 		if (!file_exists($file)) {
