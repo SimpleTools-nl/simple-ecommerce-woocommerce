@@ -75,6 +75,7 @@ if (!is_admin()) {
             $responseText = array('status' => 0, 'msg' => $e->getMessage());
         }
 
+
         $result = array();
         if (isset($responseText['status'])) {
 
@@ -194,7 +195,7 @@ if (!is_admin()) {
                     $product_image_id_main = $simpleWooCommerce->getIDfromImageName($product_image_name);
                     if ($product_image_id_main <= 0) {
                         $product_image_id_main = media_sideload_image($product_image, 0, $product_image_name, 'id');
-                        $simpleWooCommerce->updatePostName($product_image_id, $product_image_name);
+                        $simpleWooCommerce->updatePostName($product_image_id_main, $product_image_name);
                     }
                     set_post_thumbnail($sync_product_id_target, $product_image_id_main);
 
@@ -249,9 +250,8 @@ if (!is_admin()) {
                     wp_set_object_terms($sync_product_id_target, array_unique($categories), 'product_cat');
                     $categories = null;
 
-                    $result['product-id-' . $product_id] = (!isset($result['product-id-' . $product_id]) ? $sync_product_id_target : $result['product-id-' . $product_id]);
+                    $result[$pending_id] = $sync_product_id_target;
                 }
-
 
 
                 try {
@@ -269,10 +269,10 @@ if (!is_admin()) {
 
 
                     $responseText = json_decode($response->getBody()->getContents(), true);
-                    lknvar_dump($responseText, 1);
                 } catch (\Throwable $e) {
                     //do nothing
                 }
+                $return = json_encode(array('status' => 1));
             } else {
                 $return = json_encode(array('status' => 0, 'msg' => json_encode($responseText)));
             }
@@ -281,11 +281,12 @@ if (!is_admin()) {
              * that means there is a maintance period on ecommerce.simpletools.nl. 
              * do nothing
              **/
+            $return = json_encode(array('status' => 0, 'msg' => json_encode($responseText)));
         }
 
 
-
-        lknvar_dump($responseText, 1);
+        echo $return;
+        exit();
     } else if ($action == 'do_sync') {
 
         /**
