@@ -1,7 +1,7 @@
 <?php defined('_SIMPLE_ECOMMERCE_PLUGIN') or die('Restricted access');
 
 foreach ($_REQUEST as $k => $v) {
-    $_REQUEST[$k] = trim(ltrim(rtrim($v)));
+    $_REQUEST[$k] = trim(ltrim(rtrim((string)$v)));
 }
 
 if (!current_user_can("administrator")) {
@@ -13,7 +13,7 @@ if (!current_user_can("administrator")) {
 }
 
 
-$simpletools_api_key = lknInputFilter::filterInput($_REQUEST, "simple_ecommerce_user_token");
+$simpletools_api_key = (string)lknInputFilter::filterInput($_REQUEST, "simple_ecommerce_user_token");
 if ($simpletools_api_key == '') {
     $return = array();
     $return['status'] = 0;
@@ -22,7 +22,7 @@ if ($simpletools_api_key == '') {
     exit();
 }
 
-$simpletools_api_user_id = lknInputFilter::filterInput($_REQUEST, "simple_ecommerce_user_id");
+$simpletools_api_user_id = (string)lknInputFilter::filterInput($_REQUEST, "simple_ecommerce_user_id");
 if ($simpletools_api_user_id == '') {
     $return = array();
     $return['status'] = 0;
