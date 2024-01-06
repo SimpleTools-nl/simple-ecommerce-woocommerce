@@ -83,7 +83,9 @@ if (!is_admin()) {
                 $rows = $responseText['msg'];
                 if (!is_array($rows)) {
                     //return if the value is "There is no pending task"
-                    return false;
+                    echo json_encode(array('status' => 1, "msg" => "No product to sync"));
+
+                    exit();
                 }
 
                 $simpleWooCommerce = simpleToolsWooCommerce::getInstance();
@@ -252,7 +254,6 @@ if (!is_admin()) {
 
                     $result[$pending_id] = $sync_product_id_target;
                 }
-
 
                 try {
                     //we are going to inform
