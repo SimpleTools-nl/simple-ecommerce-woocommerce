@@ -25,6 +25,8 @@ if (!defined('_SIMPLE_ECOMMERCE_PLUGIN')) {
     $plugins_url = str_replace(_SIMPLE_DS, '/', $plugins_url);
     define("_SIMPLE_BASE_PATH", $plugins_url . '/simple-ecommerce');
     define("_SIMPLE_WP_ADMIN_URL", get_admin_url());
+
+    define("_SIMPLE_VERSION", "1_0_0"); //used for js and css files. 1_0_0 comes from "1.0.0". 
 }
 
 require_once __DIR__ . _SIMPLE_DS . 'wp.php';
@@ -33,8 +35,6 @@ $simpleEcommerceWoocommerce = simpleToolsWooCommerce::getInstance();
 
 
 if (is_admin()) {
-
-
 
     $simpleEcommercePlugin->getSettings();
 
@@ -46,9 +46,5 @@ if (is_admin()) {
     $simpleEcommercePlugin->actionPostUpdated();
     //if you are administrator, you can view the menu link
     $simpleEcommercePlugin->addToAdminMenu();
-
-    //	$simpleEcommercePlugin->addMetaBox();
-
-
 }
 $simpleEcommercePlugin->actionCategoryUpdated();

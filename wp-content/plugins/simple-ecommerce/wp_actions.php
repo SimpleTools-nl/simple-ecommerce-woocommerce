@@ -68,23 +68,13 @@ class simpleToolsEcommerce_WP_Actions
     }
 
 
-    //	function addMetaBox(){
-    //		add_meta_box("demo-meta-box","Auto Post To Social Media With simpleToolsEcommerce.com",array(
-    //			$this,
-    //			'custom_meta_box_markup'
-    //		),null,"side","high");
-    //
-    //		add_action('admin_enqueue_scripts',array($this,'addheader'));
-    //	}
-
-
     function addheader()
     {
         if (!$_POST) {
-            wp_enqueue_script('simpletools_main', _SIMPLE_BASE_PATH . '/views/assets/js/main.js?' . time());
-            wp_enqueue_style('simpletools_css', _SIMPLE_BASE_PATH . "/views/assets/css/main.css?3" . time());
-            wp_enqueue_style('simpletools_toast_css', _SIMPLE_BASE_PATH . "/views/assets/jquery/toastr/toastr.css?3" . time());
-            wp_enqueue_script('simpletools_toast_js', _SIMPLE_BASE_PATH . "/views/assets/jquery/toastr/toastr.js?3" . time());
+            wp_enqueue_script('simpletools_main', _SIMPLE_BASE_PATH . '/views/assets/js/main.js?' . _SIMPLE_VERSION);
+            wp_enqueue_style('simpletools_css', _SIMPLE_BASE_PATH . "/views/assets/css/main.css?3" . _SIMPLE_VERSION);
+            wp_enqueue_style('simpletools_toast_css', _SIMPLE_BASE_PATH . "/views/assets/jquery/toastr/toastr.css?3" . _SIMPLE_VERSION);
+            wp_enqueue_script('simpletools_toast_js', _SIMPLE_BASE_PATH . "/views/assets/jquery/toastr/toastr.js?3" . _SIMPLE_VERSION);
         }
     }
     function simple_ecommerce_category_updated($id, $post, $update)
@@ -135,9 +125,6 @@ class simpleToolsEcommerce_WP_Actions
         $db->setQuery();
     }
 
-
-
-
     function get($var)
     {
         if (isset($this->$var)) {
@@ -145,110 +132,6 @@ class simpleToolsEcommerce_WP_Actions
         } else {
             return null;
         }
-    }
-
-
-    function custom_meta_box_markup($meta_boxes)
-    {
-
-        $simpleEcommercePlugin = simpleToolsEcommerce::getInstance();
-        $msg = '';
-
-
-        $simpleEcommercePlugin->loadParams();
-        $simpletools_api_key = trim(ltrim(rtrim($simpleEcommercePlugin->getPostParam("simpletools_api_key"))));
-        $simpletools_api_user_id = trim(ltrim(rtrim($simpleEcommercePlugin->getPostParam("simpletools_api_user_id"))));
-        $post_format = $simpleEcommercePlugin->getPostParam('post_format');
-
-
-?>
-        <div class="simpletools_categorydiv">
-
-            <?php wp_nonce_field(basename(__FILE__), "simpletools_custom_meta_box_markup"); ?>
-
-            <?php if ($simpletools_api_key != '' && $simpletools_api_user_id != '' && $post_format != '') { ?>
-                <div class="_simpletools_meta_box">
-                    Loading...
-                </div>
-
-                <table width="100%">
-                    <tbody>
-
-                        <tr>
-                            <td scope="row"><label for="simpletools_post_format">Post Format</label></td>
-
-                        </tr>
-                        <tr>
-                            <td><textarea name="simpletools_post_format" id="simpletools_post_format" style="width: 100%;" cols="20" rows="3"><?php echo $post_format; ?></textarea>
-
-                                <div class="simpletools_how">
-                                    <?php add_thickbox(); ?>
-                                    <a href="<?php echo _SIMPLE_BASE_PATH; ?>/task/parameters.php?TB_iframe=true&width=600&height=550" class="thickbox">View Parameters Information</a><br /><br />
-
-                                    <a href="<?php echo _SIMPLE_BASE_PATH; ?>/task/how.php?TB_iframe=true&width=600&height=550" class="thickbox">How this plugin works</a>
-                                </div>
-
-                        </tr>
-
-
-                    </tbody>
-                </table>
-            <?php } else {
-            ?>
-
-                <div>
-                    <h5>Please enter your API key and User ID before you start using it. You can edit your settings from
-                        <a href="<?php echo admin_url(); ?>admin.php?page=simple-ecommerce-admin.php">this link</a>
-                    </h5>
-
-                </div>
-            <?php
-            } ?>
-
-
-        </div>
-<?php
-
-
-    }
-
-    function postProduct()
-    {
-        $simpleEcommercePlugin = simpleToolsEcommerce::getInstance();
-
-        $simpleEcommercePlugin->loadParams();
-        $simpletools_api_key = trim(ltrim(rtrim($simpleEcommercePlugin->getPostParam("simpletools_api_key"))));
-        $simpletools_api_user_id = trim(ltrim(rtrim($simpleEcommercePlugin->getPostParam("simpletools_api_user_id"))));
-
-
-        // Setter action
-        $url = "https://www.simpletools.com/api/publisher/accounts?user_id=$simpletools_api_user_id&token=$simpletools_api_key";
-
-
-        // First, we try to use wp_remote_get
-        $response = wp_remote_get($url);
-        if (!is_wp_error($response)) {
-
-            $response = $response['body'];
-            if ($response != '') {
-                $row = json_decode($response);
-
-                if (isset($row->status) && $row->status == '1') {
-                    $Psr16Adapter->set($keyword, $response, 86400);
-                }
-            } else {
-                //no response or empty body from server
-                lknredirect("admin.php?page=simple-ecommerce-admin.php", '', 'Your settings are saved but we are able to get response from lksuite.com. Please wait 2 minutes are try it again');
-            }
-        } else {
-
-            //we are not able to get content because of CURL - hosting issue wp_remote_get returns WP_Error
-            $wp_error_text = $response->get_error_message();
-            lknredirect("admin.php?page=simple-ecommerce-admin.php", '', 'Your settings are saved but we are able to get your because of your hosting. CURL returns ' . urlencode($wp_error_text));
-        }
-
-
-        return $response;
     }
 }
 
@@ -299,8 +182,3 @@ class simpleToolsEcommerce_WP_Actions_Text
         }
     }
 }
-
-
-
-
-?>
