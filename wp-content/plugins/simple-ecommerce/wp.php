@@ -200,12 +200,6 @@ class simpleToolsEcommerce
         return '';
     }
 
-    function addMetaBox()
-    {
-        add_action("add_meta_boxes", array($this->_wp_actions, 'addMetaBox'));
-    }
-
-
     function actionPostUpdated()
     {
         add_action('save_post', array($this->_wp_actions, 'post_updated'), 10, 3);
