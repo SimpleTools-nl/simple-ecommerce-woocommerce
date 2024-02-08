@@ -10,6 +10,7 @@ license.txt
 **index.html
 
 .vscode
+.idea
 wp-admin/
 wp-includes/
 wp-content/index.php
