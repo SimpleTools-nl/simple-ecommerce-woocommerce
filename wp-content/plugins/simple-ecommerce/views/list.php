@@ -81,7 +81,7 @@
                     foreach ($rows as $row) {
                         // lknvar_dump($row);
                         $product_id = stripslashes($row->get_id());
-                        $product_name = stripslashes($row->get_formatted_name());
+                        $product_name = stripslashes($row->get_name());
                         $product_sku = stripslashes($row->get_sku());
                         $product_images = $row->product_images;
                         if (count($product_images) > 0) {

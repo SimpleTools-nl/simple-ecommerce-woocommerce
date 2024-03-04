@@ -559,7 +559,7 @@ class simpleToolsWooCommerce
             $product_id = stripslashes($product->get_id());
 
             $rows[$product_id]['product_status'] = $product->get_status();
-            $rows[$product_id]['product_name'] = stripslashes($product->get_formatted_name());
+            $rows[$product_id]['product_name'] = stripslashes($product->get_name());
             $rows[$product_id]['product_sku'] = stripslashes($product->get_sku());
             $rows[$product_id]['product_image'] = get_the_post_thumbnail_url($product_id);
             $rows[$product_id]['product_images'] = $product->product_images;
